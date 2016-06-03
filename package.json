@@ -1,0 +1,18 @@
+{
+  "name": "dephell",
+  "version": "0.1.0",
+  "description": "Manager npm links",
+  "main": "index.js",
+  "bin": {
+    "dh": "./index.js"
+  },
+  "author": "Artur Delura",
+  "license": "ISC",
+  "dependencies": {
+    "child-process-promise": "^2.0.2",
+    "commander": "^2.9.0",
+    "inquirer": "^0.12.0",
+    "npm": "^3.8.0",
+    "q": "^1.4.1"
+  }
+}
