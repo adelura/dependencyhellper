@@ -1,11 +1,11 @@
-# Dependency Hell-per
+# Dependency Hellper
 
 Utility which will help you manage linked packages in `npm`.
 
 ## Installation
 
 ``` sh
-$ npm install -g dephell
+$ npm install -g dependencyhellper
 ```
 
 Then you will have `dh` option available in your command line interface.
