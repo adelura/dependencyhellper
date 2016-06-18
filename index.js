@@ -9,8 +9,12 @@ var utils = require('./lib/utils');
 program.version('0.1.0');
 
 program
+    .option('-r --replace', 'Replace with original packages (npm install)')
+    .option('-a --all', 'Unlink all linked packages');
+
+program
     .command('list')
-    .description('Show all globally linked packages')
+    .description('Show all linked packages in your project')
     .action(function () {
         utils.findSymLinks('./node_modules').then(function (linkedModules) {
             console.log('Currently linked packages to this one\n');
@@ -20,11 +24,11 @@ program
 
 program
     .command('link')
-    .description('Link chosen globally available packages')
+    .description('Link chosen packages from available ones')
     .action(function () {
         utils.getGloballyLinkedPackages().then(function (globalLinkedModules) {
             inquirer.prompt({
-                message: 'Which repository you want to link?',
+                message: 'Which package you want to link?',
                 type: 'checkbox',
                 name: 'packages',
                 choices: globalLinkedModules
@@ -46,28 +50,60 @@ program
 
 program
     .command('unlink')
-    .description('Unlink chosen from already linked packages')
+    .description('Unlink chosen packages from already linked ones')
     .action(function () {
-        utils.getLocallyLinkedPackages().then(function (linkedPackages) {
-            inquirer.prompt({
-                message: 'Which repository you want to unlink?',
-                type: 'checkbox',
-                name: 'packages',
-                choices: linkedPackages
-            }, function (answer) {
-                if (answer.packages.length == 0) {
+        utils.getLocallyLinkedPackages()
+            .then(function (linkedPackages) {
+                if (program.all) {
+                    return q.resolve(linkedPackages);
+                } else {
+                    return askForPackagesToUnlink(linkedPackages);
+                }
+            })
+            .then(function (packages) {
+                if (packages.length == 0) {
                     return;
                 }
 
-                q.all(answer.packages.map(function (module) {
+                return q.all(packages.map(function (module) {
                     return exec('npm unlink ' + module);
                 })).then(function () {
-                    console.log('done');
-                }).catch(function (err) {
-                    console.log('Error', err);
+                    return packages;
                 });
-            });
-        });
+            })
+            .then(function (packages) {
+                if (!program.replace) {
+                    return;
+                }
+
+                return q.all(packages.map(function (module) {
+                    return exec('npm install ' + module);
+                }));
+
+                console.log('ddd', packages);
+            })
+    });
+
+program
+    .command('reset')
+    .description('Unlink all linked packages and replace with original ones (npm install)')
+    .action(function () {
+        return exec('dh unlink --all --replace');
     });
 
 program.parse(process.argv);
+
+function askForPackagesToUnlink(linkedPackages) {
+    var deferred = q.defer();
+
+    inquirer.prompt({
+        message: 'Which package you want to unlink?',
+        type: 'checkbox',
+        name: 'packages',
+        choices: linkedPackages
+    }, function (answer) {
+        return deferred.resolve(answer.packages);
+    });
+
+    return deferred.promise;
+}

@@ -1,6 +1,7 @@
 # Dependency Hellper
 
-Utility which will help you manage linked packages in `npm`.
+Are you using `npm link` command often? Have you ever lost track of which package is linked and where?
+Do you want easily link or unlink some package in your project? This utility is for you.
 
 ## Installation
 
@@ -12,14 +13,25 @@ Then you will have `dh` option available in your command line interface.
 
 ## Commands
 
-Usage:
-
 ``` sh
-$ dh [command]
+$ dh [command] <flags...>
 ```
 
-| Command  | Description                                 |
-| -------- | ------------------------------------------- |
-| list     | Show all globally linked packages           |
-| link     | Link chosen globally available packages     |
-| unlink   | Unlink chosen from already linked packages  |
+### list
+
+Show all linked packages in your project
+
+### link
+
+Link chosen packages from available ones
+
+### unlink
+
+Unlink chosen packages from already linked ones
+
+Flag `-a --all`: Unlink all linked packages
+Flag `-r --replace`: Replace with original packages (npm install)
+
+### reset
+
+Unlink all linked packages and replace with original ones (npm install)
