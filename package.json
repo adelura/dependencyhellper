@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Manager npm links",
   "main": "index.js",
+  "repository": "https://github.com/adelura/dependencyhellper.git",
   "bin": {
     "dh": "./index.js"
   },
