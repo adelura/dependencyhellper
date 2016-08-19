@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": "https://github.com/adelura/dependencyhellper.git",
   "bin": {
-    "dh": "./index.js"
+    "dh": "./index-cli.js"
   },
   "author": "Artur Delura",
   "license": "ISC",

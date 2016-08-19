@@ -16,7 +16,7 @@ program
     .command('list')
     .description('Show all linked packages in your project')
     .action(function () {
-        utils.findSymLinks('./node_modules').then(function (linkedModules) {
+        utils.getLocallyLinkedPackages().then(function (linkedModules) {
             console.log('Currently linked packages to this one\n');
             console.log(linkedModules.join('\n'));
         });
