@@ -17,7 +17,10 @@ program
     .description('Show all linked packages in your project')
     .action(function () {
         utils.findSymLinks('./node_modules').then(function (linkedModules) {
-            console.log('Currently linked packages to this one\n');
+            var listMessage = linkedModules.length === 0 ?
+                'There are no linked packages.\n' : 'Currently linked packages:\n';
+
+            console.log(listMessage);
             console.log(linkedModules.join('\n'));
         });
     });
