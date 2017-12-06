@@ -16,13 +16,15 @@ program
     .command('list')
     .description('Show all linked packages in your project')
     .action(function () {
-        utils.findSymLinks('./node_modules').then(function (linkedModules) {
-            var listMessage = linkedModules.length === 0 ?
-                'There are no linked packages.\n' : 'Currently linked packages:\n';
+        let linkedModules = utils.findSymLinks('./node_modules');
 
-            console.log(listMessage);
-            console.log(linkedModules.join('\n'));
-        });
+        if (linkedModules === null) {
+            console.log(`It looks like it's not a valid npm package - couldn't find node_modules directory here`);
+            return;
+        }
+
+        console.log('Currently linked packages to this one\n');
+        console.log('  ' + linkedModules.join('\n  '));
     });
 
 program
