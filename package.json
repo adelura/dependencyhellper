@@ -1,6 +1,6 @@
 {
   "name": "dependencyhellper",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Manager npm links",
   "main": "index.js",
   "repository": "https://github.com/adelura/dependencyhellper.git",
